@@ -127,3 +127,12 @@ aws cloudformation wait stack-delete-complete --region us-east-1 --stack-name We
 ```
 
 The second command finishes with no output once everything is deleted.
+
+## How I verified it
+
+I launched `corpweb.json` as `WebserversDev` in us-east-1, once with the console (screenshots above) and once with the CLI.
+
+- **Stack created:** The stack reached **CREATE_COMPLETE** with no errors.
+- **Load balancing:** Opening the `WebUrl` in a browser showed `Hi, I'm instance i-...`. Refreshing switched between the two instance IDs (`i-0064f5f57484ddcf5` and `i-05641f09330fa6743`), so the load balancer sent traffic to both servers.
+- **SSH:** In an earlier test run of the same template, I connected to both servers with my key pair and confirmed Apache was running.
+- **Teardown:** I deleted both stacks and confirmed they show **DELETE_COMPLETE**, with no instances left running.
